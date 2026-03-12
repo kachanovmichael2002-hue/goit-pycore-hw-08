@@ -27,6 +27,16 @@ class Phone(Field):
         if not re.fullmatch(r"\d{10}", value):
             raise ValueError("Phone number must be exactly 10 digits")
         super().__init__(value)
+        
+# ➕ Додав клас Email після Phone 
+
+class Email(Field):
+    """Поле для зберігання email."""
+
+    def __init__(self, value):
+        if "@" not in value:
+            raise ValueError("Невірний формат email.")
+        super().__init__(value)
 
 class Birthday(Field):
     def __init__(self, value):
@@ -47,9 +57,14 @@ class Record:
         self.name = Name(name)
         self.phones = []
         self.birthday = None
+        self.email = None  # NEW
 
     def add_phone(self, phone_value):
         self.phones.append(Phone(phone_value))
+
+    def add_email(self, email):  # NEW
+    """Додає email до контакту."""
+    self.email = Email(email)
 
     def remove_phone(self, phone_value):
         self.phones = [p for p in self.phones if p.value != phone_value]
